@@ -7,6 +7,9 @@ const app = express();
 // Loading the environment variables from the .env file.
 require("dotenv").config();
 
+// mock database to store our books
+let booksList = [];
+
 // configure server settings
 
 // set the server listening port
@@ -22,6 +25,64 @@ app.use(express.json());
 // When it receives a request, it will send back a response with the string "Hello World!".
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+// API route handler to get the books from our book list
+app.get("/getBooks", (req, res) => {
+  res.status(200).json(booksList);
+});
+
+// API route handler to add a new book to our book list.
+app.post("/addBook", (req, res) => {
+  booksList.push({
+    id: booksList.length,
+    name: req.body.name,
+    author: req.body.author,
+    description: req.body.description,
+  });
+  console.log(`successfully added book "${req.body.name}" to book list!`);
+  console.log("books list", booksList);
+
+  res.status(200).send("Successfully added book to book list!");
+});
+
+app.post("/updateBook", (req, res) => {
+  console.log("hit updatebook");
+
+  const bookId = req.body.id;
+
+  const bookIdx = booksList.findIndex((book) => book.id === bookId);
+
+  if (bookIdx !== -1) {
+    booksList[bookIdx] = {
+      id: bookId,
+      name: req.body.name,
+      author: req.body.author,
+      description: req.body.description,
+    };
+    console.log("updated book", booksList[bookIdx]);
+    res.status(200).send("Successfully updated book in book list!");
+  } else {
+    res.status(404).send(`Cannot find book with id ${bookId}`);
+  }
+});
+
+app.delete("/deleteBook/:id", (req, res) => {
+  const bookId = Number(req.params.id);
+
+  console.log("bookid", bookId);
+
+  const bookIdx = booksList.findIndex((book) => book.id === bookId);
+
+  if (bookIdx !== -1) {
+    booksList.splice(bookIdx, 1);
+
+    console.log("books list", booksList);
+
+    res.status(200).send("Successfully deleted book from book list!");
+  } else {
+    res.status(404).send(`Cannot find book with id ${bookId}`);
+  }
 });
 
 console.log(`express server ready for requests on port ${PORT}!`);
