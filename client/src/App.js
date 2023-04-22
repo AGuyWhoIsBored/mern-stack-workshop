@@ -3,36 +3,37 @@ import { useState } from "react";
 import BookListContainer from "./components/BookListContainer";
 import NewBookContainer from "./components/NewBookContainer";
 
-const DEFAULT_BOOKS = [
-  {
-    name: "book 1",
-    author: "dookan",
-    description: "my first book",
-  },
-  {
-    name: "book 2",
-    author: "still dookan",
-    description: "my second book",
-  },
-  {
-    name: "book 3",
-    author: "not dookan",
-    description: "my third book",
-  },
-];
-
 function App() {
   const [books, setBooks] = useState([]);
 
-  function addNewBook(name, author, description) {
-    setBooks([
-      ...books,
-      {
-        name,
-        author,
-        description,
+  async function addNewBook(name, author, description) {
+    const newBook = {
+      name,
+      author,
+      description,
+    };
+
+    // post new book to server
+    const res = await fetch("http://localhost:3333/addBook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(newBook),
+    });
+
+    if (res.status === 200) {
+      const id = await res.json();
+      setBooks([
+        ...books,
+        {
+          id: id.id,
+          name,
+          author,
+          description,
+        },
+      ]);
+    }
   }
 
   return (

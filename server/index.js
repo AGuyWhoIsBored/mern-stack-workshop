@@ -1,6 +1,7 @@
 // load the express module
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 // load the Book model
 const Book = require("./bookSchema");
@@ -22,6 +23,9 @@ const MONGODB_URI = process.env.MONGODB_CONNECTION_URI;
 // Telling the application to use the express.json() middleware. This middleware will parse the body of
 // any request that has a Content-Type of application/json.
 app.use(express.json());
+
+// allow frontend to connect to backend on a different domain
+app.use(cors());
 
 // This is a route handler. It is listening for a GET request to the root route of the application.
 // When it receives a request, it will send back a response with the string "Hello World!".
@@ -49,7 +53,7 @@ app.post("/addBook", async (req, res) => {
   await newBook.save();
 
   console.log(`successfully added book "${req.body.name}" to book list!`);
-  res.status(200).send("Successfully added book to book list!");
+  res.status(200).json({ id: newBook._id });
 });
 
 app.post("/updateBook", async (req, res) => {
@@ -81,6 +85,7 @@ app.delete("/deleteBook/:id", async (req, res) => {
 });
 
 // establish connection cloud mongodb instance
+console.log("start connection");
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true })
   // only start the server if the connection was successful
