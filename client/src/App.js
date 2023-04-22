@@ -1,5 +1,6 @@
 import "./App.css";
 import BookItem from "./components/BookItem";
+import AddNewBookForm from "./components/AddNewBookForm";
 
 function App() {
   return (
@@ -8,24 +9,7 @@ function App() {
 
       <div className="newBookContainer">
         <h2>Add a New Book</h2>
-        <form>
-          <div>
-            <label htmlFor="newBookNameInput">Name</label>
-            <input type="text" id="newBookNameInput" />
-          </div>
-
-          <div>
-            <label htmlFor="newBookAuthor">Author</label>
-            <input type="text" id="newBookAuthor" />
-          </div>
-
-          <div>
-            <label htmlFor="newBookDescription">Description</label>
-            <input type="text" id="newBookDescription" />
-          </div>
-
-          <button type="submit">Add Book</button>
-        </form>
+        <AddNewBookForm />
       </div>
 
       <div className="bookListContainer">
