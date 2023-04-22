@@ -1,10 +1,10 @@
 import AddNewBookForm from "./AddNewBookForm";
 
-export default function NewBookContainer() {
+export default function NewBookContainer(props) {
   return (
     <div className="newBookContainer">
       <h2>Add a New Book</h2>
-      <AddNewBookForm />
+      <AddNewBookForm addNewBook={props.addNewBook} />
     </div>
   );
 }

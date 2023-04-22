@@ -9,8 +9,14 @@ export default function AddNewBookForm(props) {
     updateStateFn(e.target.value);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    props.addNewBook(name, author, description);
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="newBookNameInput">Name</label>
         <input

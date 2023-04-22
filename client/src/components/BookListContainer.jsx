@@ -1,15 +1,19 @@
 import BookItem from "./BookItem";
 
-export default function BookListContainer() {
+export default function BookListContainer(props) {
+  const booksList = props.books?.map((book) => (
+    <BookItem
+      name={book.name}
+      author={book.author}
+      description={book.description}
+    />
+  ));
+
   return (
     <div className="bookListContainer">
       <h2>List of Books</h2>
 
-      <ul>
-        <BookItem name="book 1" author="dookan" description="desc 1" />
-        <BookItem name="book 2" author="dookan" description="another desc" />
-        <BookItem name="book 3" author="dookan" description="desc 2!" />
-      </ul>
+      {booksList ? <ul>{booksList}</ul> : <p>No books yet!</p>}
     </div>
   );
 }
