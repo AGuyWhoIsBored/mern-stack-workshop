@@ -1,5 +1,6 @@
 // load the express module
 const express = require("express");
+const mongoose = require("mongoose");
 
 // initialize a new express application
 const app = express();
@@ -14,6 +15,7 @@ let booksList = [];
 
 // set the server listening port
 const PORT = process.env.PORT || 5555;
+const MONGODB_URI = process.env.MONGODB_CONNECTION_URI;
 
 // middlewares
 
@@ -85,7 +87,18 @@ app.delete("/deleteBook/:id", (req, res) => {
   }
 });
 
-console.log(`express server ready for requests on port ${PORT}!`);
+// establish connection cloud mongodb instance
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true })
+  // only start the server if the connection was successful
+  .then(() => {
+    console.log("connection to mongodb successful");
 
-// allow express to listen for incoming requests
-app.listen(PORT);
+    // allow express to listen for incoming requests
+    console.log(`express server ready for requests on port ${PORT}!`);
+    app.listen(PORT);
+  })
+  // if the connection fails, terminate server
+  .catch((err) => {
+    console.log(err);
+  });
