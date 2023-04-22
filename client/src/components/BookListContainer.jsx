@@ -2,11 +2,15 @@ import BookItem from "./BookItem";
 
 export default function BookListContainer(props) {
   const booksList = props.books?.map((book) => (
-    <BookItem
-      name={book.name}
-      author={book.author}
-      description={book.description}
-    />
+    <li key={book.id}>
+      <BookItem
+        id={book.id}
+        name={book.name}
+        author={book.author}
+        description={book.description}
+        updateBook={props.updateBook}
+      />
+    </li>
   ));
 
   return (

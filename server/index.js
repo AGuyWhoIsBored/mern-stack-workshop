@@ -36,7 +36,16 @@ app.get("/", (req, res) => {
 // API route handler to get the books from our book list
 app.get("/getBooks", async (req, res) => {
   const books = await Book.find();
-  res.status(200).json(books);
+  res.status(200).json(
+    books.map((book) => {
+      return {
+        id: book._id,
+        name: book.name,
+        author: book.author,
+        description: book.description,
+      };
+    })
+  );
 });
 
 // API route handler to add a new book to our book list.
@@ -68,7 +77,7 @@ app.post("/updateBook", async (req, res) => {
 
     res.status(200).send("Successfully updated book in book list!");
   } catch (error) {
-    res.status(404).send(`Failed to update book: ${error.message}`);
+    res.status(500).send(`Failed to update book: ${error.message}`);
   }
 });
 

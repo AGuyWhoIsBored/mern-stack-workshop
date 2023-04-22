@@ -11,9 +11,13 @@ export default function BookItem(props) {
     updateStateFn(e.target.value);
   }
 
+  function handleSendUpdate() {
+    props.updateBook(props.id, name, author, description);
+  }
+
   return (
-    <li>
-      <div class="bookInfo">
+    <div>
+      <div className="bookInfo">
         <div>
           <label>Name:</label>
           <input
@@ -42,8 +46,8 @@ export default function BookItem(props) {
         </div>
       </div>
 
-      <div class="buttonActions">
-        <button type="button" className="btn">
+      <div className="buttonActions">
+        <button type="button" className="btn" onClick={handleSendUpdate}>
           Update Book Info
         </button>
 
@@ -51,6 +55,6 @@ export default function BookItem(props) {
           Delete Book
         </button>
       </div>
-    </li>
+    </div>
   );
 }
