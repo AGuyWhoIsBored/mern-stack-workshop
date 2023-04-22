@@ -1,6 +1,7 @@
 import "./App.css";
+import BookItem from "./components/BookItem";
 
-function App(props) {
+function App() {
   return (
     <div className="appContainer">
       <h1>Book List Thingy!</h1>
@@ -31,77 +32,9 @@ function App(props) {
         <h2>List of Books</h2>
 
         <ul>
-          <li>
-            <div class="bookInfo">
-              <p>
-                <b>Name:</b> hello!
-              </p>
-              <p>
-                <b>Author:</b> dookan
-              </p>
-              <p>
-                <b>Description:</b> this is quite the book
-              </p>
-            </div>
-
-            <div class="buttonActions">
-              <button type="button" className="btn">
-                Edit Book Info
-              </button>
-
-              <button type="button" className="btn">
-                Delete Book
-              </button>
-            </div>
-          </li>
-
-          <li>
-            <div class="bookInfo">
-              <p>
-                <b>Name:</b> hello!
-              </p>
-              <p>
-                <b>Author:</b> dookan
-              </p>
-              <p>
-                <b>Description:</b> this is quite the book
-              </p>
-            </div>
-
-            <div class="buttonActions">
-              <button type="button" className="btn">
-                Edit Book Info
-              </button>
-
-              <button type="button" className="btn">
-                Delete Book
-              </button>
-            </div>
-          </li>
-
-          <li>
-            <div class="bookInfo">
-              <p>
-                <b>Name:</b> hello!
-              </p>
-              <p>
-                <b>Author:</b> dookan
-              </p>
-              <p>
-                <b>Description:</b> this is quite the book
-              </p>
-            </div>
-
-            <div class="buttonActions">
-              <button type="button" className="btn">
-                Edit Book Info
-              </button>
-
-              <button type="button" className="btn">
-                Delete Book
-              </button>
-            </div>
-          </li>
+          <BookItem name="book 1" author="dookan" description="desc 1" />
+          <BookItem name="book 2" author="dookan" description="another desc" />
+          <BookItem name="book 3" author="dookan" description="desc 2!" />
         </ul>
       </div>
     </div>
