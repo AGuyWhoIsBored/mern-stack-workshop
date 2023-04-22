@@ -98,8 +98,8 @@ function App() {
   }
 
   return (
-    <div className="appContainer">
-      <h1>Book List Thingy!</h1>
+    <div id="appContainer">
+      <h1 id="appTitle">Book List Thingy!</h1>
       <NewBookContainer addNewBook={addNewBook} />
       <BookListContainer
         books={books}

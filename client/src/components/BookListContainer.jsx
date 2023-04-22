@@ -15,10 +15,14 @@ export default function BookListContainer(props) {
   ));
 
   return (
-    <div className="bookListContainer">
+    <div id="bookListContainer">
       <h2>List of Books</h2>
 
-      {booksList ? <ul>{booksList}</ul> : <p>No books yet!</p>}
+      {booksList && booksList.length > 0 ? (
+        <ul>{booksList}</ul>
+      ) : (
+        <p>No books yet!</p>
+      )}
     </div>
   );
 }

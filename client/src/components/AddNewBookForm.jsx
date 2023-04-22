@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AddNewBookForm(props) {
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
+
+  const [addBtnState, setAddBtnState] = useState(false);
+
+  useEffect(() => {
+    setAddBtnState(name.length && author.length && description.length);
+  }, [name, author, description]);
 
   function handleTextChange(e, updateStateFn) {
     updateStateFn(e.target.value);
@@ -13,11 +19,15 @@ export default function AddNewBookForm(props) {
     e.preventDefault();
 
     props.addNewBook(name, author, description);
+
+    setName("");
+    setAuthor("");
+    setDescription("");
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div className="inputGroup">
         <label htmlFor="newBookNameInput">Name</label>
         <input
           type="text"
@@ -27,7 +37,7 @@ export default function AddNewBookForm(props) {
         />
       </div>
 
-      <div>
+      <div className="inputGroup">
         <label htmlFor="newBookAuthor">Author</label>
         <input
           type="text"
@@ -37,7 +47,7 @@ export default function AddNewBookForm(props) {
         />
       </div>
 
-      <div>
+      <div className="inputGroup">
         <label htmlFor="newBookDescription">Description</label>
         <input
           type="text"
@@ -47,7 +57,11 @@ export default function AddNewBookForm(props) {
         />
       </div>
 
-      <button type="submit">Add Book</button>
+      <div className="buttonGroup">
+        <button type="submit" disabled={!addBtnState}>
+          Add Book
+        </button>
+      </div>
     </form>
   );
 }

@@ -1,0 +1,38 @@
+#appContainer,
+#newBookContainer,
+.bookItem {
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid black;
+}
+#appTitle {
+  text-align: center;
+}
+
+.inputGroup {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.inputGroup > label {
+  margin-right: 1rem;
+  font-weight: 600;
+}
+.inputGroup > input {
+  width: 100%;
+}
+
+#newBookContainer > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+}
+
+#bookListContainer > ul {
+  list-style-type: none;
+  padding-left: 0;
+}

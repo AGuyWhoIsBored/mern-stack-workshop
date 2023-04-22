@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function BookItem(props) {
-  const [name, setName] = useState(props.name ?? "No name");
-  const [author, setAuthor] = useState(props.author ?? "No author");
-  const [description, setDescription] = useState(
-    props.description ?? "No description"
-  );
+  const [name, setName] = useState(props.name);
+  const [author, setAuthor] = useState(props.author);
+  const [description, setDescription] = useState(props.description);
+
+  const [updateBtnState, setUpdateBtnState] = useState(false);
+
+  useEffect(() => {
+    const newNameValid = name !== props.name;
+    const newAuthorValid = author !== props.author;
+    const newDescriptionValid = description !== props.description;
+
+    const fieldsValid =
+      name.length > 0 && author.length > 0 && description.length > 0;
+
+    setUpdateBtnState(
+      (newNameValid || newAuthorValid || newDescriptionValid) && fieldsValid
+    );
+  }, [name, author, description, props.name, props.author, props.description]);
 
   function handleTextChange(e, updateStateFn) {
     updateStateFn(e.target.value);
@@ -20,9 +33,9 @@ export default function BookItem(props) {
   }
 
   return (
-    <div>
-      <div className="bookInfo">
-        <div>
+    <div className="bookItem">
+      <div>
+        <div className="inputGroup">
           <label>Name:</label>
           <input
             type="text"
@@ -31,7 +44,7 @@ export default function BookItem(props) {
           />
         </div>
 
-        <div>
+        <div className="inputGroup">
           <label>Author:</label>
           <input
             type="text"
@@ -40,7 +53,7 @@ export default function BookItem(props) {
           />
         </div>
 
-        <div>
+        <div className="inputGroup">
           <label>Description:</label>
           <input
             type="text"
@@ -50,12 +63,16 @@ export default function BookItem(props) {
         </div>
       </div>
 
-      <div className="buttonActions">
-        <button type="button" className="btn" onClick={handleSendUpdate}>
+      <div className="buttonGroup">
+        <button
+          type="button"
+          disabled={!updateBtnState}
+          onClick={handleSendUpdate}
+        >
           Update Book Info
         </button>
 
-        <button type="button" className="btn" onClick={handleSendDelete}>
+        <button type="button" onClick={handleSendDelete}>
           Delete Book
         </button>
       </div>
