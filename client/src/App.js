@@ -1,10 +1,27 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookListContainer from "./components/BookListContainer";
 import NewBookContainer from "./components/NewBookContainer";
 
 function App() {
   const [books, setBooks] = useState([]);
+
+  // fetch books on page load
+  useEffect(() => {
+    async function fetchBooks() {
+      const res = await fetch("http://localhost:3333/getBooks");
+
+      if (res.status === 200) {
+        const booksJson = await res.json();
+
+        console.log("booksjson", booksJson);
+
+        setBooks(booksJson);
+      }
+    }
+
+    fetchBooks();
+  }, []);
 
   async function addNewBook(name, author, description) {
     const newBook = {
