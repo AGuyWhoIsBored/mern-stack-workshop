@@ -2,14 +2,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
+// load the Book model
+const Book = require("./bookSchema");
+
 // initialize a new express application
 const app = express();
 
 // Loading the environment variables from the .env file.
 require("dotenv").config();
-
-// mock database to store our books
-let booksList = [];
 
 // configure server settings
 
@@ -30,60 +30,53 @@ app.get("/", (req, res) => {
 });
 
 // API route handler to get the books from our book list
-app.get("/getBooks", (req, res) => {
-  res.status(200).json(booksList);
+app.get("/getBooks", async (req, res) => {
+  const books = await Book.find();
+  res.status(200).json(books);
 });
 
 // API route handler to add a new book to our book list.
-app.post("/addBook", (req, res) => {
-  booksList.push({
-    id: booksList.length,
+app.post("/addBook", async (req, res) => {
+  // create new Book object
+  const newBook = new Book({
     name: req.body.name,
     author: req.body.author,
     description: req.body.description,
   });
-  console.log(`successfully added book "${req.body.name}" to book list!`);
-  console.log("books list", booksList);
 
+  // persist it to database using mongoose
+  // need to do this asynchronously since it takes time for database to persist this
+  await newBook.save();
+
+  console.log(`successfully added book "${req.body.name}" to book list!`);
   res.status(200).send("Successfully added book to book list!");
 });
 
-app.post("/updateBook", (req, res) => {
-  console.log("hit updatebook");
-
+app.post("/updateBook", async (req, res) => {
   const bookId = req.body.id;
 
-  const bookIdx = booksList.findIndex((book) => book.id === bookId);
+  try {
+    const book = await Book.findById(bookId);
+    book.name = req.body.name;
+    book.author = req.body.author;
+    book.description = req.body.description;
+    await book.save();
 
-  if (bookIdx !== -1) {
-    booksList[bookIdx] = {
-      id: bookId,
-      name: req.body.name,
-      author: req.body.author,
-      description: req.body.description,
-    };
-    console.log("updated book", booksList[bookIdx]);
     res.status(200).send("Successfully updated book in book list!");
-  } else {
-    res.status(404).send(`Cannot find book with id ${bookId}`);
+  } catch (error) {
+    res.status(404).send(`Failed to update book: ${error.message}`);
   }
 });
 
-app.delete("/deleteBook/:id", (req, res) => {
-  const bookId = Number(req.params.id);
+app.delete("/deleteBook/:id", async (req, res) => {
+  const bookId = req.params.id;
 
-  console.log("bookid", bookId);
-
-  const bookIdx = booksList.findIndex((book) => book.id === bookId);
-
-  if (bookIdx !== -1) {
-    booksList.splice(bookIdx, 1);
-
-    console.log("books list", booksList);
+  try {
+    await Book.findByIdAndDelete(bookId);
 
     res.status(200).send("Successfully deleted book from book list!");
-  } else {
-    res.status(404).send(`Cannot find book with id ${bookId}`);
+  } catch (error) {
+    res.status(404).send(`Failed to delete book: ${error.message}`);
   }
 });
 
