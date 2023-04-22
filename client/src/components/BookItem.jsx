@@ -15,6 +15,10 @@ export default function BookItem(props) {
     props.updateBook(props.id, name, author, description);
   }
 
+  function handleSendDelete() {
+    props.deleteBook(props.id);
+  }
+
   return (
     <div>
       <div className="bookInfo">
@@ -51,7 +55,7 @@ export default function BookItem(props) {
           Update Book Info
         </button>
 
-        <button type="button" className="btn">
+        <button type="button" className="btn" onClick={handleSendDelete}>
           Delete Book
         </button>
       </div>

@@ -9,6 +9,7 @@ export default function BookListContainer(props) {
         author={book.author}
         description={book.description}
         updateBook={props.updateBook}
+        deleteBook={props.deleteBook}
       />
     </li>
   ));

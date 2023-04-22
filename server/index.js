@@ -87,6 +87,8 @@ app.delete("/deleteBook/:id", async (req, res) => {
   try {
     await Book.findByIdAndDelete(bookId);
 
+    console.log(`deleted book ${bookId}`);
+
     res.status(200).send("Successfully deleted book from book list!");
   } catch (error) {
     res.status(404).send(`Failed to delete book: ${error.message}`);

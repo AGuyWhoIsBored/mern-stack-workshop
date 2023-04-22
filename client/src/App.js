@@ -50,6 +50,8 @@ function App() {
           description,
         },
       ]);
+    } else {
+      alert("an error occurred when adding a new book");
     }
   }
 
@@ -76,6 +78,22 @@ function App() {
       const updateBookIdx = newBookArr.findIndex((book) => book.id === id);
       newBookArr[updateBookIdx] = newBook;
       setBooks(newBookArr);
+    } else {
+      alert("an error occurred when updating a book");
+    }
+  }
+
+  async function deleteBook(id) {
+    // send delete request to server
+    const res = await fetch(`http://localhost:3333/deleteBook/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.status === 200) {
+      const newBookArr = books.filter((book) => book.id !== id);
+      setBooks(newBookArr);
+    } else {
+      alert("an error occurred when deleting book");
     }
   }
 
@@ -83,7 +101,11 @@ function App() {
     <div className="appContainer">
       <h1>Book List Thingy!</h1>
       <NewBookContainer addNewBook={addNewBook} />
-      <BookListContainer books={books} updateBook={updateBook} />
+      <BookListContainer
+        books={books}
+        updateBook={updateBook}
+        deleteBook={deleteBook}
+      />
     </div>
   );
 }
